@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>I'm Soooo Sorry Sandeep! 🥺💖</title>
+    <!-- Importing Bubbly, Super Cute Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-milky: #fff5f5;
+            --card-white: #ffffff;
+            --text-dark: #594a4e;
+            --text-soft: #7c6a70;
+            --pastel-pink: #ff9a9e;
+            --pink-border: #ffcad4;
+            --baby-blue: #a1c4fd;
+            --pastel-yellow: #fef08a;
+            --strawberry: #ff758c;
+            --highlight-box: #fff0f3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-milky);
+            color: var(--text-dark);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            background-image: 
+                radial-gradient(#ffcad4 1.5px, transparent 1.5px),
+                radial-gradient(#ffcad4 1.5px, var(--bg-milky) 1.5px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+
+        html {
+            height: -webkit-fill-available;
+        }
+
+        /* Floating Element Canvas */
+        #cute-elements-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 580px;
+            padding: 16px;
+            margin: auto;
+        }
+
+        /* Adorable Card Styling */
+        .page {
+            background: var(--card-white);
+            border-radius: 36px;
+            padding: 35px 24px;
+            box-shadow: 0 15px 35px rgba(255, 154, 158, 0.25), 0 5px 15px rgba(0,0,0,0.04);
+            border: 4px solid var(--pink-border);
+            display: none;
+            opacity: 0;
+            transform: scale(0.95) rotate(-0.5deg);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+            max-height: 92vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        /* Custom Cute Scrollbar */
+        .page::-webkit-scrollbar { width: 6px; }
+        .page::-webkit-scrollbar-thumb { background: var(--pastel-pink); border-radius: 10px; }
+
+        /* Floating Badge Top Left */
+        .page-badge {
+            position: absolute;
+            top: 18px;
+            left: 20px;
+            background: var(--pastel-yellow);
+            color: var(--text-dark);
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 2px dashed #facc15;
+            transform: rotate(-5deg);
+            box-shadow: 2px 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* Cute Sticker Top Right */
+        .corner-sticker {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        .mascot-group {
+            font-size: 3rem;
+            margin: 15px 0 5px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .mascot-group span { animation: float 3s infinite ease-in-out; }
+        .mascot-group span:nth-child(2) { animation-delay: 0.3s; }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--strawberry);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .letter-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-soft);
+            text-align: left;
+            margin-bottom: 20px;
+            white-space: pre-line;
+            font-weight: 600;
+            padding: 0 6px;
+        }
+
+        .fluffy-apology-box {
+            background: var(--highlight-box);
+            border: 3px dashed var(--pastel-pink);
+            padding: 18px;
+            margin: 15px 0;
+            border-radius: 24px;
+            color: var(--text-dark);
+            font-weight: 700;
+            text-align: left;
+            position: relative;
+            box-shadow: inset 0 0 10px rgba(255, 154, 158, 0.15);
+        }
+
+        /* Washi-Tape Photo Frame UI (Strictly 2 Photos per page) */
+        .photo-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .cute-photo-card {
+            background: #ffffff;
+            border: 3px solid var(--pink-border);
+            border-radius: 20px;
+            padding: 12px 12px 18px 12px;
+            box-shadow: 0 8px 20px rgba(255, 154, 158, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .cute-photo-card:nth-child(1) { transform: rotate(-2deg); }
+        .cute-photo-card:nth-child(2) { transform: rotate(2.5deg); }
+
+        .cute-photo-card:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
+
+        /* Washi Tape Element holding the photo down */
+        .washi-tape {
+            position: absolute;
+            top: -8px;
+            width: 60px;
+            height: 22px;
+            background-color: var(--pastel-pink);
+            opacity: 0.85;
+            transform: rotate(-3deg);
+            border-radius: 2px;
+            background-image: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 75%, transparent 75%, transparent);
+            background-size: 10px 10px;
+            box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
+            z-index: 5;
+        }
+        .cute-photo-card:nth-child(2) .washi-tape { background-color: var(--baby-blue); transform: rotate(4deg); }
+
+        .photo-img-box {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #ffe4e6;
+            margin-bottom: 10px;
+            border: 2px solid #fff0f3;
+        }
+
+        .photo-img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Spacious Area to Write custom text */
+        .photo-writing-area {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.4;
+            text-align: center;
+            width: 100%;
+            padding: 4px 2px;
+        }
+
+        /* Bouncy Buttons */
+        .cute-btn {
+            background: linear-gradient(135deg, var(--strawberry), var(--pastel-pink));
+            border: none;
+            color: white;
+            padding: 15px 36px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 117, 140, 0.4), 0 4px 0 #e14d67;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            outline: none;
+        }
+
+        .cute-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 25px rgba(255, 117, 140, 0.5), 0 6px 0 #e14d67; }
+        .cute-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #e14d67; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-6px) scale(1.1); } }
+
+        @media (max-width: 480px) {
+            .page { padding: 30px 16px; border-width: 3px; }
+            h1 { font-size: 1.5rem; }
+            .photo-layout { gap: 10px; }
+            .photo-writing-area { font-size: 0.78rem; }
+            .mascot-group { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="cute-elements-canvas"></canvas>
+
+    <div class="main-wrapper">
+
+        <!-- PAGE 1: ADORABLE OPENING -->
+        <div class="page active" id="page-1">
+            <div class="page-badge">Page 1 of 4</div>
+            <div class="corner-sticker">🎀</div>
+            
+            <div class="mascot-group">
+                <span>🐰</span><span>💌</span><span>🧸</span>
+            </div>
+
+            <h1>For Sandeep, My Entire World!</h1>
+            
+            <div class="letter-content">
+                meraa pyaaara sa baccha  🥺
+                
+                muje ptaa mai babyy maine bahut glat kiya tere sath , muje ptaa hai mai maafi ke laayak ni hun , muje ni ptaa tu muje maaf kr paige ya ni kbi , bs mai btaana chata hun ki apne beech he ek moment sachi thi and i love u soo much or mai krta rhunga hamesha
+                
+                Please click the bouncy button below 
+            </div>
+
+            <!-- Page 1 Photos (Exactly 2) -->
+            <div class="photo-layout">
+                <div class="cute-photo-card">
+                    <div class="washi-tape"></div>
+                    <div class="photo-img-box">
+                        <img src="image1.jpg" alt="Us 1">
+                    </div>
+                    <div class="photo-writing-area">
+                        <!-- TYPE YOUR MEMORY HERE -->
+                        merko abi bhi yaad hai ye moment, merko rona aa gaya the terko dhekye ,inni sunder lr ri thi tu 💖
+                    </div>
+                </div>
+
+                <div class="cute-photo-card">
+                    <div class="washi-tape"></div>
+                    <div class="photo-img-box">
+                        <img src="image2.jpg" alt="Us 2">
+                    </div>
+                    <div class="photo-writing-area">
+                        <!-- TYPE YOUR MEMORY HERE -->
+                        ye mera best kiss the roadside pr , tune merko kiss kiyaa tha, tune ek dm sai kiss krde thi 🥰
+                    </div>
+                </div>
+            </div>
+
+            <button class="cute-btn" onclick="nextPage(2)">Open My Heart ✨</button>
+        </div>
+
+        <!-- PAGE 2: THE SINCERE APOLOGY -->
+        <div class="page" id="page-2">
+            <div class="page-badge">Page 2 of 4</div>
+            <div class="corner-sticker">🥺</div>
+
+            <div class="mascot-group">
+                <span>😭</span><span>👉👈</span><span>🩹</span>
+            </div>
+
+            <h1>I Am Soooo, Soooo Sorry!</h1>
+            
+            <div class="letter-content">
+                i am soo sorry babyy , merko pata hai ye maine bahut galat kiya hai hahut glat kiya hai , muje pataa mai mai mafi ke layak ni hun , pr ek baar maaf krde please ek baar or trust krke dhek le iss baar ni todunga pkaa
+
+                muje pata hai tu merpe trust krti hai tabhi mai kuch kr deta hun , mai chutiya hun , pr ek baar maaf krde terko aaj ke baad kbi bhi dukhi ni krunga, iss baar krun to mai khud mr jau pkaa 
+
+                <div class="fluffy-apology-box">
+                    "mai apne dadi , teri , sbki ksm hanumaan , mere hone wale bacche ke ksm khake khatahun ke mai terko kbi bhi hurt ni krung aaj ke baad " 💕
+                </div>
+            </div>
+
+            <!-- Page 2 Photos (Exactly 2) -->
+            <div class="photo-layout">
+                <div class="cute-photo-card">
+                    <div class="washi-tape"></div>
+                    <div class="photo-img-box">
+                        <img src="image3.jpeg" alt="Us 3">
+                    </div>
+                    <div class="photo-writing-area">
+                        <!-- TYPE YOUR MEMORY HERE -->
+                        ye apna phala ear ring jo maine terko diya the, merko rona aa rha hai ye dhekye , i love u sooo much babyyy 🤝🤍
+                    </div>
+                </div>
+
+                <div class="cute-photo-card">
+                    <div class="washi-tape"></div>
+                    <div class="photo-img-box">
+                        <img src="image4.jpeg" alt="Us 4">
+                    </div>
+                    <div class="photo-writing-area">
+                        <!-- TYPE YOUR MEMORY HERE -->
+                        ye pani first date , inni muskil sai hui thi, pr finnaly hogi thi , merko aaj bhi yaad mai smoke sai terko dikat hori thi pr tune candles off ni ki , i love u soo much babyyy 🌸✨
+                    </div>
+                </div>
+            </div>
+
+            <button class="cute-btn" onclick="nextPage(3)">Look At Our Happy Days 🍓</button>
+        </div>
+
+        <!-- PAGE 3: THE GOOD TIMES -->
+        <div class="page" id="page-3">
+            <div class="page-badge">Page 3 of 4</div>
+            <div class="corner-sticker">🍓</div>
+
+            <div class="mascot-group">
+                <span></span><span></span><span></span>
+            </div>
+
+            <h1>first vc and first flower on date</h1>
+            
+            <div class="letter-content" style="text-align: center;">
+                merko yaad aari mai aapki please , merko rona aa rha hai ye sb dhekye , i love u soo much.
+            </div>
+
+            <!-- Page 3 Photos (Exactly 2) -->
+            <div class="photo-layout">
+                <div class="cute-photo-card">
+                    <div class="washi-tape"></div>
+                    <div class="photo-img-box">
+                        <img src="image5.jpg" alt="Us 5">
+                    </div>
+                    <div class="photo-writing-area">
+                        <!-- TYPE YOUR MEMORY HERE -->
+                        yaad aari hai merko wo first time video call jo tune ki th ,  merko yaad aari hai aapki i love u soo much , best decision the mera wo call krne ka , i love u soo much babyy
+                    </div>
+                </div>
+
+                <div class="cute-photo-card">
+                    <div class="washi-tape"></div>
+                    <div class="photo-img-box">
+                        <img src="image6.jpg" alt="Us 6">
+                    </div>
+                    <div class="photo-writing-area">
+                        <!-- TYPE YOUR MEMORY HERE -->
+                        ye first flowe ho maine terlo first time diya the , babyy please i love u soo much
+                    </div>
+                </div>
+            </div>
+
+            <button class="cute-btn" onclick="nextPage(4)">One Last Question... 👉👈</button>
+        </div>
+
+        <!-- PAGE 4: THE CLOSING PLEA & MINI GAME -->
+        <div class="page" id="page-4">
+            <div class="page-badge">Final Page!</div>
+            <div class="corner-sticker">💖</div>
+
+            <div class="mascot-group">
+                <span>🥺</span><span>💐</span><span>💝</span>
+            </div>
+
+            <h1>Please, Please Forgive Me?</h1>
+            
+            <div class="letter-content" style="text-align: center; color: var(--strawberry); font-size: 1.15rem;">
+                "thank u soo much babyy merii life mai aane ke liye tune merko feminist bnaaya hai tune, tune merii mummy ki respect krna shikhaya hai issai badi cheez ni maang skta terse"
+            </div>
+
+            <!-- Page 4 Photos (Exactly 2) -->
+            <div class="photo-layout">
+                <div class="cute-photo-card">
+                    <div class="washi-tape"></div>
+                    <div class="photo-img-box">
+                        <img src="image7.jpg" alt="Us 7">
+                    </div>
+                    <div class="photo-writing-area">
+                        <!-- TYPE YOUR MEMORY HERE -->
+                         mai guru dhaware mai ye meri best moment thi tu bhagwaan mai ni maanti fir bhi tune maatha teka , i love u soo much babyyy🫂
+                    </div>
+                </div>
+
+                <div class="cute-photo-card">
+                    <div class="washi-tape"></div>
+                    <div class="photo-img-box">
+                        <img src="image8.jpg" alt="Us 8">
+                    </div>
+                    <div class="photo-writing-area">
+                        <!-- TYPE YOUR MEMORY HERE -->
+                        ye photo hm dona ek sath aaise hi sath mai rhenge i promice to u 🔒💖
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Cute Forgiveness Action -->
+            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                <button class="cute-btn" onclick="triggerCelebration()">Yes! I Forgive You 💖</button>
+                <button class="cute-btn" id="no-btn" style="background: #e2e8f0; color: #64748b; box-shadow: 0 4px 0 #cbd5e1;" onmouseover="dodgeButton()" onclick="dodgeButton()">No 哼 (Hmph) 😤</button>
+            </div>
+            
+            <button style="background:none; border:none; color:var(--pastel-pink); font-weight:700; margin-top:25px; cursor:pointer; text-decoration:underline;" onclick="nextPage(1)">🔁 Read all over again!</button>
+        </div>
+
+    </div>
+
+    <script>
+        function nextPage(pageNumber) {
+            const activePage = document.querySelector('.page.active');
+            const targetPage = document.getElementById(`page-${pageNumber}`);
+            
+            if (activePage && targetPage) {
+                activePage.style.opacity = '0';
+                activePage.style.transform = 'scale(0.95) rotate(1deg)';
+                
+                setTimeout(() => {
+                    activePage.classList.remove('active');
+                    targetPage.classList.add('active');
+                    targetPage.scrollTop = 0;
+
+                    setTimeout(() => {
+                        targetPage.style.opacity = '1';
+                        targetPage.style.transform = 'scale(1) rotate(0deg)';
+                    }, 50);
+                }, 350);
+            }
+        }
+
+        // Mini-Game Dodge Button
+        function dodgeButton() {
+            const btn = document.getElementById('no-btn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 40) - ((window.innerWidth - btn.offsetWidth - 40)/2);
+            const y = (Math.random() * 80) - 40;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function triggerCelebration() {
+            alert("YAYYYY! Thank you my sweetest Sandeep! I love you sooooo much! Sending a million virtual kisses! 💋💖✨🍓🧸");
+            for(let i=0; i<35; i++) { cuteElements.push(new FluffyElement(true)); }
+        }
+
+        // Adorable Emoji Rain Background
+        const canvas = document.getElementById('cute-elements-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; });
+
+        const emojis = ['🌸', '💖', '✨', '🍓', '🎀', '💌', '🧸', '☁️'];
+        const elementCount = window.innerWidth < 600 ? 18 : 32;
+        const cuteElements = [];
+
+        class FluffyElement {
+            constructor(isBurst = false) { this.reset(isBurst); }
+            reset(isBurst) {
+                this.emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                this.x = isBurst ? w/2 : Math.random() * w;
+                this.y = isBurst ? h/2 : h + Math.random() * 100;
+                this.size = Math.random() * 14 + 14;
+                this.speedY = isBurst ? (Math.random() * 6 - 3) : -(Math.random() * 1 + 0.5);
+                this.speedX = isBurst ? (Math.random() * 6 - 3) : Math.sin(Math.random() * 3) * 0.4;
+                this.opacity = Math.random() * 0.6 + 0.3;
+                this.rot = Math.random() * 360;
+                this.rotSpeed = (Math.random() - 0.5) * 2;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rot += this.rotSpeed;
+                if (this.y < -50 || this.x < -50 || this.x > w + 50) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rot * Math.PI / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px sans-serif`;
+                ctx.fillText(this.emoji, -this.size/2, this.size/2);
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < elementCount; i++) { cuteElements.push(new FluffyElement()); }
+
+        function animate() {
+            ctx.clearRect(0, 0, w, h);
+            cuteElements.forEach(el => { el.update(); el.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
